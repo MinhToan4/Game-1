@@ -30,8 +30,8 @@ public:
 		Vector2f center = window.getView().getCenter();
 		Vector2f size = window.getView().getSize();
 
-		s.setPosition(   center.x - size.x/2 + 10, center.y - size.y/2 + 10);
-	    bar.setPosition( center.x - size.x/2 + 11, center.y - size.y/2 + 13);
+		s.setPosition(   center.x - size.x/2 - 10, center.y - size.y/2 + 12);
+	    bar.setPosition( center.x - size.x/2 + 15, center.y - size.y/2 + 13);
 
 		window.draw(s);
 		window.draw(bar);
