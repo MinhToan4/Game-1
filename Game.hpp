@@ -12,11 +12,21 @@
 #include "Enemy.hpp"
 #include "MovingPlatform.hpp"
 #include "HealthBar.hpp"
+#include <SFML/Audio.hpp>
+
 using namespace sf;
 
 // Dom dom Hoa hai duong
 void RunGame()
 {	
+	SoundBuffer buffer; // hold audio data
+	buffer.loadFromFile("D:/test3/files/nhachay.wav"); // load sound file into buffer
+	Sound sound; // create Sound object use buffer to play sound
+	sound.setBuffer(buffer); // associate loaded sound buffer with sound object
+	sound.setLoop(true); // run to die 
+	sound.setVolume(65); // medium rare
+	sound.play(); // play --> bat nhac hay and chillll
+	
 	// Create game window
 	RenderWindow window(VideoMode(450, 280), "Game do hoa mot nguoi");
 

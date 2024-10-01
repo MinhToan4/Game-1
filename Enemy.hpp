@@ -1,9 +1,10 @@
 #ifndef ENEMY_H
 #define ENEMY_H
-
+#include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp> // For displaying text
 #include "Entity.hpp"
 
-// thien ly oi!!!!!
+
 // ENEMY class inheriting from Entity
 class ENEMY : public Entity
 {
@@ -20,6 +21,13 @@ private:
     // Flag to control visibility (for hiding the enemy after death)
     bool isVisible = true;
 
+    // Flag to ensure sound is played only once on death
+    bool soundPlayed = false;
+
+    // Sound-related members
+    sf::SoundBuffer buffer; // hold audio data
+    sf::Sound sound;        // create Sound object
+
 public:
     // Constructor initialize: animation + position
     ENEMY(AnimationManager &a, Level &lev, int x, int y) : Entity(a, x, y)
@@ -30,6 +38,15 @@ public:
 
         // Name, speed, health, and initial animation
         option("Enemy", 0.01, 15, "move");
+
+        // Load sound file into buffer
+        if (!buffer.loadFromFile("D:/test3/files/siu.wav"))
+        {
+            // Handle error if the file cannot be loaded
+            std::cerr << "Error loading sound file!" << std::endl;
+        }
+        sound.setBuffer(buffer); // associate loaded sound buffer with sound object
+        sound.setVolume(500);    // set volume level
     }
 
     // Update function to control the enemy's behavior
@@ -38,16 +55,12 @@ public:
         // If the enemy is dead, track time to respawn
         if (isDead)
         {
-            // Hide the enemy after it dies
             isVisible = false; // Make the enemy invisible
+            timer_respawn += time; // Track respawn time
 
-            // Track the time after death to manage respawn
-            timer_respawn += time;
-
-            // Respawn after 3 seconds (3000 units of time)
             if (timer_respawn > 3000)
             {
-                respawn(); // Call the respawn function
+                respawn(); // Respawn after 3 seconds
             }
 
             return; // Skip the rest of the update logic while dead
@@ -67,19 +80,26 @@ public:
         }
 
         // If health is less than or equal to 0, mark the enemy as dead
-        if (Health <= 0)
+        if (Health <= 0 && !isDead)
         {
             anim.set("dead"); // Switch animation to "dead"
-            dx = 0; // Stop movement
+            dx = 0;           // Stop movement
+            isDead = true;     // Mark enemy as dead
+            timer_end = 0;     // Reset death timer
 
-            // Track how long the enemy has been "dead"
+            sound.play();
+            
+        }
+
+        // Track how long the enemy has been "dead"
+        if (isDead)
+        {
             timer_end += time;
 
-            // After 4000 units of time, switch the state to "dead"
             if (timer_end > 4000)
             {
-                isDead = true; // Mark enemy as dead
-                timer_respawn = 0; // Start the respawn timer
+                isDead = true;      // Mark enemy as permanently dead
+                timer_respawn = 0;  // Start the respawn timer
             }
         }
 
@@ -99,8 +119,8 @@ public:
         isVisible = true;   // Make the enemy visible again
         timer_respawn = 0;  // Reset respawn timer
         timer_end = 0;      // Reset death timer
+        soundPlayed = false; // Reset the sound played flag for the next death
     }
-
 };
 
 #endif // ENEMY_H
