@@ -1,0 +1,40 @@
+# Project: Project1
+# Makefile created by Dev-C++ 5.8.2
+
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+OBJ      = source/TinyXML/tinyxmlerror.o main.o source/TinyXML/tinyxmlparser.o source/TinyXML/tinystr.o source/TinyXML/tinyxml.o
+LINKOBJ  = source/TinyXML/tinyxmlerror.o main.o source/TinyXML/tinyxmlparser.o source/TinyXML/tinystr.o source/TinyXML/tinyxml.o
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -L"../SFML-2.3.2-windows-gcc-4.8.1-tdm-64-bit/SFML-2.3.2/lib" -mwindows -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
+INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include"
+CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include/c++"
+BIN      = Project1.exe
+CXXFLAGS = $(CXXINCS) -std=c++11
+CFLAGS   = $(INCS) -std=c++11
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+source/TinyXML/tinyxmlerror.o: source/TinyXML/tinyxmlerror.cpp
+	$(CPP) -c source/TinyXML/tinyxmlerror.cpp -o source/TinyXML/tinyxmlerror.o $(CXXFLAGS)
+
+main.o: main.cpp
+	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
+
+source/TinyXML/tinyxmlparser.o: source/TinyXML/tinyxmlparser.cpp
+	$(CPP) -c source/TinyXML/tinyxmlparser.cpp -o source/TinyXML/tinyxmlparser.o $(CXXFLAGS)
+
+source/TinyXML/tinystr.o: source/TinyXML/tinystr.cpp
+	$(CPP) -c source/TinyXML/tinystr.cpp -o source/TinyXML/tinystr.o $(CXXFLAGS)
+
+source/TinyXML/tinyxml.o: source/TinyXML/tinyxml.cpp
+	$(CPP) -c source/TinyXML/tinyxml.cpp -o source/TinyXML/tinyxml.o $(CXXFLAGS)
